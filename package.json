@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/mckn/gulp-nuget/issues"
   },
-  "homepage": "https://github.com/mckn/gulp-nuget"
+  "homepage": "https://github.com/mckn/gulp-nuget",
+  "dependencies": {
+    "gulp-util": "^2.2.14",
+    "fs-extra": "^0.8.1",
+    "vinyl": "^0.2.3"
+  }
 }
