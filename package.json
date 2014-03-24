@@ -1,0 +1,24 @@
+{
+  "name": "gulp-nuget",
+  "version": "0.0.1",
+  "description": "gulp nuget support to pack and push nuget packages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mckn/gulp-nuget.git"
+  },
+  "keywords": [
+    "gulpplugin",
+    "nuget",
+    "deploy"
+  ],
+  "author": "Marcus Andersson <systemvetaren@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mckn/gulp-nuget/issues"
+  },
+  "homepage": "https://github.com/mckn/gulp-nuget"
+}
