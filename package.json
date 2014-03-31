@@ -27,6 +27,7 @@
     "vinyl": "^0.2.3"
   },
   "devDependencies": {
-    "mocha": "^1.18.2"
+    "mocha": "^1.18.2",
+    "proxyquire": "^0.5.3"
   }
 }
