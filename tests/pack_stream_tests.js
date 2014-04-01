@@ -86,4 +86,30 @@ describe('when pushing files to nuget pack stream', function() {
 
 	});
 
+	describe('and package.json is passed as a file', function() {
+		
+		before(function(done) {
+			options.version = "1.2.2";
+
+			file = new File({
+				cwm: '../', 
+				base: '../', 
+				path: '../package.json', 
+				contents: new Buffer('{}') 
+			});
+
+			processStream(done);
+		});
+
+		it('should create nuget package with _package.json file in it (due to nuget ignoring package.json)', function() {
+			assert.equal(nuspecFile.contents.length, 2566);
+			assert.equal(path.basename(nuspecFile.path), 'gulp.nuget.1.2.2.nupkg');
+		});
+
+		after(function(done) {
+			fs.unlink(nuspecFile.path, done);
+		});
+
+	});
+
 });
