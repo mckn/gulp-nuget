@@ -1,50 +1,89 @@
-var proxyquire = require('proxyquire'),
-	assert = require("assert");
-
-var stubs = {
-		'./pack-cmd': {
-			run: function(options, cb) {
-				this.options = options;
-				cb({ pack: 'fake' });
-			}
-		},
-		'./log': function(output) {
-			this.output = output;
-		},
-		'fs-extra': {
-			outputFile: function(copyTo, content, cb) {
-				this.copyTo = copyTo;
-				this.content = content;
-				cb();
-			},
-			remove: function(workingDirectory, cb) {
-				this.workingDirectory = workingDirectory;
-				cb();
-			}
-		}
-	},
-	packStream = proxyquire('../lib/pack', stubs);
+var path = require('path'),
+	assert = require("assert"),
+	File = require("vinyl"),
+	map = require('vinyl-map'),
+	fs = require('fs'),
+	packStream = require('../lib/pack');
 
 describe('when pushing files to nuget pack stream', function() {
-	var options = { 
-			workingDirectory: './nuget', 
-			nuget: 'nuget.exe', 
-			nuspec: 'nuspecFile.nuspec', 
-			version: '1.0.0' 
-		},
-		stream;
+	var nuspecFile,
+		options,
+		file;
+
+	var processStream = function(done) {
+		var stream = packStream(options);
+
+		stream.pipe(map(function(code, filename) {
+			nuspecFile = {
+				path: filename,
+				contents: code
+			};
+			done();
+		}));
+
+		stream.write(file);
+		stream.end();
+	};
 
 	before(function() {
-		stream = packStream(options);
-		stream.write({ path: '../index.js', _content: 'asdf' });
-		stream.end();
+		options = { 
+			workingDirectory: '../tools/nuget', 
+			nuget: '../tools/nuget.exe'
+		};
+
+		file = new File({ 
+			cwm: '../', 
+			base: '../', 
+			path: '../testing.js', 
+			contents: new Buffer('testing') 
+		});
 	});
 
-	it('should call nuget pack cmd with correct options', function() {
-		assert.deepEqual(stubs['./pack-cmd'].options, options);
+	describe('and version is set in nuspecfile', function() {
+
+		before(function(done) {
+			options.nuspec = '../tools/with-version.nuspec';
+
+			processStream(done);
+		});
+
+		it('should create nuget package and pushing it down the pipeline', function() {
+			assert.equal(nuspecFile.contents.length, 2563);
+			assert.equal(path.basename(nuspecFile.path), 'gulp.nuget.1.0.0.nupkg');
+		});
+
+		it('should create nuget package and store it on disk', function() {
+			assert.equal(fs.existsSync(nuspecFile.path), true);
+		});
+
+		after(function(done) {
+			fs.unlink(nuspecFile.path, done);
+		});
+
 	});
 
-	it('should call nuget pack with correct options', function() {
-		assert.equal(stubs['fs-extra'].copyTo, 'nuget\\index.js');
+	describe('and version is set in options', function() {
+		
+		before(function(done) {
+			options.nuspec = '../tools/without-version.nuspec';
+			options.version = '1.1.1';
+
+			processStream(done);
+		});
+
+		it('should create nuget package and pushing it down the pipeline', function() {
+			assert.equal(nuspecFile.contents.length, 2564);
+			assert.equal(path.basename(nuspecFile.path), 'gulp.nuget.1.1.1.nupkg');
+		});
+
+		it('should create nuget package and store it on disk', function() {
+			assert.equal(fs.existsSync(nuspecFile.path), true);
+		});
+
+		after(function(done) {
+			fs.unlink(nuspecFile.path, done);
+		});
+
 	});
+
 });
