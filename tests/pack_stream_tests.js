@@ -113,3 +113,36 @@ describe('when pushing files to nuget pack stream', function() {
 	});
 
 });
+
+
+describe('when creating nuget pack stream', function() {
+	var options;
+
+	beforeEach(function() {
+		options = { 
+			workingDirectory: '../tools/nuget', 
+			nuget: '../tools/nuget.exe',
+			version: '1.0.0',
+			nuspec: 'nuspecFile.nuspec'
+		};
+	});
+
+	describe('and nuspec is missing from options', function() {
+
+		it('should throw exception', function() {
+			options.nuspec = false;
+			assert.throws(function() { packStream(options); });
+		});
+
+	});
+
+	describe('and nuget is missing from options', function() {
+
+		it('should throw exception', function() {
+			options.nuget = false;
+			assert.throws(function() { packStream(options); });
+		});
+
+	});
+
+});
