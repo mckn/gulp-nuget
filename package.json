@@ -30,5 +30,8 @@
     "mocha": "^1.18.2",
     "proxyquire": "^0.5.3",
     "vinyl-map": "^1.0.1"
+  },
+  "directories": {
+    "lib": "./lib"
   }
 }
