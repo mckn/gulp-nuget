@@ -23,8 +23,6 @@ gulp.task('nuget-download', function(done) {
 
 ```
 
-Once you have nuget (downloaded or provided by a other path) you could use the gulp-nuget plugin.
-
 ### How to use gulp-nuget pack:
 
 Select the files you want to pack and pipe them do nuget pack. Pipe the nuget.pack stream out to where you want to save the nuget package.
