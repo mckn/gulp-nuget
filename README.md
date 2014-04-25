@@ -2,7 +2,7 @@ gulp-nuget
 ==========
 This is just a quick draft to get you all started with the plugin. I will improve the documentation later on. If you think anything is missing or not working as described below, please open an issue or send a pull request...thanks!
 
-First off, you will need nuget. Here is an example on how you can download it. Do this in a step prior to running the gulp-nuget plugin. If you already have it on the machine you could just add the path to it instead and skip this step.
+First off, you will need nuget. Here is an example on how you can download it. Do this in a step prior to running the gulp-nuget plugin. If you already have it on the machine you could just skip this step.
 
 ```javascript
 
