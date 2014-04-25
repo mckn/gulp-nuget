@@ -96,3 +96,30 @@ gulp.task('nuget-pack-n-push', function() {
 });
 
 ```
+
+### Possible ways to configure nuget with this plugin.
+
+#### gulp-nuget pack
+
+```javascript
+
+var options = {
+    nuspec: 'project.nuspec', // path to nuspec file (required)
+    nuget: 'nuget.exe', // path to nuget.exe (required)
+    version: '1.0.0', // if you want to set the version by command line (not required).
+    workingDirectory: './temp' // temp folder used fore files to be packed. (not required - default: ./publish)
+};
+
+```
+
+#### gulp-nuget push
+
+```javascript
+
+var options = {
+    nuget: 'nuget.exe', // path to nuget.exe (required)
+    feed: 'http://mynugetfeed.org/', //url to the feed where you want to publish your nuget package (required)
+    apiKey: 'api-key' // api key required by your nuget package feed. See nuget.org for alternative ways to set this key (not required).
+};
+
+```
