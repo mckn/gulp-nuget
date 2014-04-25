@@ -119,7 +119,7 @@ var options = {
 var options = {
     nuget: 'nuget.exe', // path to nuget.exe (required)
     feed: 'http://mynugetfeed.org/', //url to the feed where you want to publish your nuget package (required)
-    apiKey: 'api-key' // api key required by your nuget package feed. See nuget.org for alternative ways to set this key (not required).
+    apiKey: 'api-key' // api key to your nuget package feed. See nuget.org for other ways to set this key (not required).
 };
 
 ```
