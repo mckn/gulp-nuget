@@ -4,7 +4,7 @@
   "description": "gulp nuget support to pack and push nuget packages",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -12,8 +12,7 @@
   },
   "keywords": [
     "gulpplugin",
-    "nuget",
-    "deploy"
+    "nuget"
   ],
   "author": "Marcus Andersson <systemvetaren@gmail.com>",
   "license": "MIT",
@@ -22,9 +21,9 @@
   },
   "homepage": "https://github.com/mckn/gulp-nuget",
   "dependencies": {
-    "gulp-util": "^2.2.14",
-    "fs-extra": "^0.8.1",
-    "vinyl": "^0.2.3"
+    "fs-extra": "^0.26.5",
+    "gulp-util": "^3.0.7",
+    "vinyl": "^1.1.1"
   },
   "devDependencies": {
     "mocha": "^1.18.2",
