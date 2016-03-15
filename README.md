@@ -121,3 +121,17 @@ var options = {
 };
 
 ```
+
+### if you want to run tests
+
+Make sure you have docker installed and running.
+
+```bash
+# to get the source and build the docker image.
+git clone git@github.com:mckn/gulp-nuget.git
+cd gulp-nuget
+docker-compose build
+
+# to run the tests inside a container of the image
+docker-compose run gulp-nuget npm test
+```

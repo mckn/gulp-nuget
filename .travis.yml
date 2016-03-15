@@ -1,0 +1,7 @@
+sudo: required
+services:
+  - docker
+install:
+  - npm install
+script:
+  - docker-compose run gulp-nuget npm test
