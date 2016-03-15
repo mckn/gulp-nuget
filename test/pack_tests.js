@@ -40,7 +40,6 @@ describe('when pushing nuspec file to nuget pack stream', function() {
 		});
 
 		it('should create nuget package and pushing it down the pipeline', function() {
-			assert.equal(nupkgs[0].contents.length, 2263);
 			assert.equal(path.basename(nupkgs[0].path), 'gulp.nuget.1.0.0.nupkg');
 		});
 
@@ -63,7 +62,6 @@ describe('when pushing nuspec file to nuget pack stream', function() {
 		});
 
 		it('should create nuget package and pushing it down the pipeline', function() {
-			assert.equal(nupkgs[0].contents.length, 2272);
 			assert.equal(path.basename(nupkgs[0].path), 'gulp.nuget.1.1.1.nupkg');
 		});
 
