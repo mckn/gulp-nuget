@@ -6,104 +6,91 @@ var fs = require('fs');
 var nuget = require('../');
 
 describe('when pushing nuspec file to nuget pack stream', function() {
+	var nupkgs = [];
 
-	describe.only('and version is set in nuspec file', function() {
-		var nupkg;
+	function packFile(nuspecFile, options, done) {
+		fs.readFile(nuspecFile, function(err, data) {
+			if(err) return done(err);
+
+			var nuspec = new File({
+				cwm: '/',
+				base: '/test/',
+				path: nuspecFile,
+				contents: data
+			});
+
+			var stream = nuget.pack(options);
+
+			stream.pipe(map(function(contents, path) {
+				nupkgs.push({ path: path, contents: contents });
+			}));
+
+			stream.on('end', done);
+			stream.write(nuspec);
+			stream.end();
+		});
+	}
+
+	describe('and version is set in nuspec file', function() {
 
 		before(function(done) {
-			var path = './test/nuspecs/with-version.nuspec';
-
-			fs.readFile(path, function(err, data) {
-				if(err) return done(err);
-
-				var nuspec = new File({
-					cwm: '/',
-					base: '/test/',
-					path: path,
-					contents: data
-				});
-
-				var stream = nuget.pack({ nuget: '/usr/bin/nuget', outputDirectory: './' });
-
-				stream.pipe(map(function(contents, path) {
-					nupkg = { path: path, contents: contents };
-				}));
-
-				stream.on('end', done);
-				stream.write(nuspec);
-				stream.end();
-			});
+			nupkgs = [];
+			options = { nuget: 'nuget', outputDirectory: './' };
+			packFile('./test/nuspecs/with-version.nuspec', options, done);
 		});
 
 		it('should create nuget package and pushing it down the pipeline', function() {
-			assert.equal(nupkg.contents.length, 2263);
-			assert.equal(path.basename(nupkg.path), 'gulp.nuget.1.0.0.nupkg');
+			assert.equal(nupkgs[0].contents.length, 2263);
+			assert.equal(path.basename(nupkgs[0].path), 'gulp.nuget.1.0.0.nupkg');
 		});
 
 		it('should create nuget package and store it on disk', function() {
-			assert.equal(fs.existsSync(nupkg.path), true);
+			assert.equal(fs.existsSync(nupkgs[0].path), true);
 		});
 
 		after(function(done) {
-			fs.unlink(nupkg.path, done);
+			fs.unlink(nupkgs[0].path, done);
 		});
 
 	});
 
-	// describe('and version is set in options', function() {
-	//
-	// 	before(function(done) {
-	// 		options.version = '1.1.1';
-	//
-	// 		processStream(done);
-	// 	});
-	//
-	// 	it('should create nuget package and pushing it down the pipeline', function() {
-	// 		assert.equal(nuspecFile.contents.length, 2564);
-	// 		assert.equal(path.basename(nuspecFile.path), 'gulp.nuget.1.1.1.nupkg');
-	// 	});
-	//
-	// 	it('should create nuget package and store it on disk', function() {
-	// 		assert.equal(fs.existsSync(nuspecFile.path), true);
-	// 	});
-	//
-	// 	after(function(done) {
-	// 		fs.unlink(nuspecFile.path, done);
-	// 	});
-	//
-	// });
+	describe('and version is set in options', function() {
+
+		before(function(done) {
+			nupkgs = [];
+			options = { nuget: 'nuget', outputDirectory: './', version: '1.1.1' };
+			packFile('./test/nuspecs/without-version.nuspec', options, done);
+		});
+
+		it('should create nuget package and pushing it down the pipeline', function() {
+			assert.equal(nupkgs[0].contents.length, 2272);
+			assert.equal(path.basename(nupkgs[0].path), 'gulp.nuget.1.1.1.nupkg');
+		});
+
+		it('should create nuget package and store it on disk', function() {
+			assert.equal(fs.existsSync(nupkgs[0].path), true);
+		});
+
+		after(function(done) {
+			fs.unlink(nupkgs[0].path, done);
+		});
+
+	});
+
+	describe('and symbols is set in options', function() {
+
+		before(function(done) {
+			nupkgs = [];
+			options = { nuget: 'nuget', symbols: true };
+			packFile('./test/nuspecs/with-version.nuspec', options, done);
+		});
+
+		it('should create nuget package and symbols', function() {
+			assert.equal(nupkgs[0].contents.length, 2263);
+			assert.equal(path.basename(nupkgs[0].path), 'gulp.nuget.1.0.0.nupkg');
+			assert.equal(path.basename(nupkgs[1].path), 'gulp.nuget.1.0.0.symbols.nupkg');
+		});
+
+	});
 
 });
-
-
-// describe('when creating nuget pack stream', function() {
-// 	var options;
-//
-// 	beforeEach(function() {
-// 		options = {
-// 			workingDirectory: '../tools/nuget',
-// 			nuget: '../tools/nuget.exe',
-// 			version: '1.0.0',
-// 			nuspec: 'nuspecFile.nuspec'
-// 		};
-// 	});
-//
-// 	describe('and nuspec is missing from options', function() {
-//
-// 		it('should throw exception', function() {
-// 			options.nuspec = false;
-// 			assert.throws(function() { packStream(options); });
-// 		});
-//
-// 	});
-//
-// 	describe('and nuget is missing from options', function() {
-//
-// 		it('should throw exception', function() {
-// 			options.nuget = false;
-// 			assert.throws(function() { packStream(options); });
-// 		});
-//
-// 	});
-//
-// });

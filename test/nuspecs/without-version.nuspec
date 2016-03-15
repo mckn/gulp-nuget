@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>gulp.nuget</id>
+    <version>$version$</version>
+    <authors>abc</authors>
+    <owners>abc</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>abc</description>
+  </metadata>
+  <files>
+    <file src="without-version.nuspec" target="content"/>
+  </files>
+</package>
