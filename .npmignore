@@ -2,3 +2,6 @@ tests
 tools
 node_modules
 .gitignore
+.dockerignore
+Dockerfile
+docker-compose.yml

@@ -23,7 +23,7 @@ describe('when pushing nuspec file to nuget pack stream', function() {
 					contents: data
 				});
 
-				var stream = pack({ nuget: '/usr/bin/nuget', outputDirectory: './.asdf' });
+				var stream = pack({ nuget: '/usr/bin/nuget', outputDirectory: './' });
 
 				stream.pipe(map(function(contents, path) {
 					nupkg = { path: path, contents: contents };
@@ -45,8 +45,7 @@ describe('when pushing nuspec file to nuget pack stream', function() {
 		});
 
 		after(function(done) {
-			done();
-			//fs.unlink(nupkg.path, done);
+			fs.unlink(nupkg.path, done);
 		});
 
 	});

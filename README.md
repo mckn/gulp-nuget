@@ -9,7 +9,7 @@ First off, you will need nuget. Here is an example on how you can download it. D
 var gulp = require('gulp'),
     request = require('request'),
     fs = require('fs');
-    
+
 gulp.task('nuget-download', function(done) {
     if(fs.existsSync('nuget.exe')) {
         done();
@@ -31,12 +31,12 @@ Select the files you want to pack and pipe them do nuget pack. Pipe the nuget.pa
 
 var gulp = require('gulp'),
     nuget = require('gulp-nuget');
-    
+
 gulp.task('nuget-pack', function() {
     var nugetPath = './path/to/nuget.exe';
-    
-    gulp.src(['./*.js', './package.json'])
-        .pipe(nuget.pack({ nuspec: 'project.nuspec', nuget: nugetPath, version: '1.0.0' }))
+
+    gulp.src(['project.nuspec'])
+        .pipe(nuget.pack({ version: "1.0.0" }))
         .pipe(gulp.dest('project.1.0.0.nupkg'));
 });
 
@@ -50,10 +50,10 @@ You could choose to just push a single nuget package like this:
 
 var gulp = require('gulp'),
     nuget = require('gulp-nuget');
-    
+
 gulp.task('nuget-pack', function() {
     var nugetPath = './path/to/nuget.exe';
-    
+
     gulp.src('project.1.0.0.nupkg')
         .pipe(nuget.push({ feed: 'http://your-nuget-feed.org/', nuget: nugetPath, apiKey: 'secret-key-goes-here' }));
 });
@@ -66,10 +66,10 @@ Or you could push multiple packages like this:
 
 var gulp = require('gulp'),
     nuget = require('gulp-nuget');
-    
+
 gulp.task('nuget-pack', function() {
     var nugetPath = './path/to/nuget.exe';
-    
+
     gulp.src(['project.1.0.0.nupkg', 'project.1.1.0.nupkg'])
         .pipe(nuget.push({ feed: 'http://your-nuget-feed.org/', nuget: nugetPath, apiKey: 'secret-key-goes-here' }));
 });
@@ -84,7 +84,7 @@ If you don't want to save your nuget package you could push it directly by pipin
 
 var gulp = require('gulp'),
     nuget = require('gulp-nuget');
-    
+
 gulp.task('nuget-pack-n-push', function() {
     var nugetPath = './path/to/nuget.exe';
 
