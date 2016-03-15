@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mckn/gulp-nuget.svg?branch=master)](https://travis-ci.org/mckn/gulp-nuget)
+
 gulp-nuget
 ==========
 This is just a quick draft to get you all started with the plugin. I will improve the documentation later on. If you think anything is missing or not working as described below, please open an issue or send a pull request...thanks!
