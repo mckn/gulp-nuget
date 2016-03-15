@@ -3,7 +3,7 @@ var assert = require("assert");
 var File = require("vinyl");
 var map = require('vinyl-map');
 var fs = require('fs');
-var pack = require('../lib/pack');
+var nuget = require('../');
 
 describe('when pushing nuspec file to nuget pack stream', function() {
 
@@ -23,7 +23,7 @@ describe('when pushing nuspec file to nuget pack stream', function() {
 					contents: data
 				});
 
-				var stream = pack({ nuget: '/usr/bin/nuget', outputDirectory: './' });
+				var stream = nuget.pack({ nuget: '/usr/bin/nuget', outputDirectory: './' });
 
 				stream.pipe(map(function(contents, path) {
 					nupkg = { path: path, contents: contents };
