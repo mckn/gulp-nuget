@@ -28,9 +28,9 @@ describe('when pushing nuget package to push stream', function() {
 				path: filename,
 				contents: code
 			};
-			done();
 		}));
 
+    stream.on('end', done);
 		stream.write(file);
 		stream.end();
 	};
