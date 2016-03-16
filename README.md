@@ -66,7 +66,7 @@ gulp.task('nuget-pack', function() {
 ```
 
 ##### Valid options for nuget pack
-Options that have a default value is specified by a comment except of boolean values that are by default always false.
+Options that have a default value is specified by a comment except of boolean values that are by default always false. The new temp folder that is used is ./gulp-nuget and should be added to your .gitignore file.
 
 Read more about the options here:
 http://docs.nuget.org/consume/command-line-reference#pack-command
