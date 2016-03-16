@@ -3,7 +3,7 @@
 gulp-nuget
 ==========
 
-** Version 1.0.0 have breaking changes so please check the release notes before updating **
+**Version 1.0.0 have breaking changes so please check the release notes before updating**
 
 This is hopefully all you need to get started with the plugin. If you think anything is missing or not working as described below, please open an issue or send a pull request...thanks!
 
@@ -26,6 +26,11 @@ gulp.task('nuget-download', function(done) {
 });
 
 ```
+
+Then you can use the following commands:
+* [pack](https://github.com/mckn/gulp-nuget#how-to-use-gulp-nuget-pack)
+* [push](https://github.com/mckn/gulp-nuget#how-to-use-gulp-nuget-push)
+* [restore](https://github.com/mckn/gulp-nuget#how-to-use-gulp-nuget-restore)
 
 ### How to use gulp-nuget pack:
 
