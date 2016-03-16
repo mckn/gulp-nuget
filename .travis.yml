@@ -1,0 +1,10 @@
+sudo: required
+language: node_js
+node_js:
+  - "4.2"
+services:
+  - docker
+install:
+  - npm install
+script:
+  - docker-compose run gulp-nuget npm test
