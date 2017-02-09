@@ -82,6 +82,7 @@ var options = {
   properties: 'configuration=release',
   minClientVersion: '2.5',
   msBuildVersion: '12',
+  verbosity: 'normal',
   build: true,
   symbols: true,
   excludeEmptyDirectories: true,
@@ -141,7 +142,8 @@ var options = {
   source: 'http://your-nuget-feed.org',
   apiKey: 'secret-key-goes-here',
   timeout: '300',
-  configFile: '%AppData%/NuGet/NuGet.config'
+  configFile: '%AppData%/NuGet/NuGet.config',
+  verbosity: 'normal',
 };
 
 var stream = nuget.push(options);
@@ -200,6 +202,7 @@ var options = {
   packagesDirectory: './packages',
   solutionDirectory: './',
   msBuildVersion: '12',
+  verbosity: 'normal',
   noCache: true,
   requireConsent: true,
   disableParallelProcessing: true
