@@ -1,6 +1,6 @@
 {
   "name": "gulp-nuget",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "gulp nuget support to pack, push and restore nuget packages",
   "main": "index.js",
   "scripts": {
