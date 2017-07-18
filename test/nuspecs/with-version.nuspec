@@ -10,5 +10,6 @@
   </metadata>
   <files>
     <file src="with-version.nuspec" target="content"/>
+    <file src="../configs/symbols.pdb" target="lib\net40" />
   </files>
 </package>
