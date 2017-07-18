@@ -76,7 +76,7 @@ http://docs.nuget.org/consume/command-line-reference#pack-command
 var options = {
   nuget: './path/to/nuget.exe', //./nuget.exe
   outputDirectory: './nupkgs/', //./gulp-nuget/
-  maxBuffer: 200*1024, // [node child_process buffer](https://nodejs.org/api/child_process.html#child_process_child_process_execfile_file_args_options_callback)
+  maxBuffer: 200*1024, // node child_process buffer
   version: '1.0.0',
   basePath: './',
   exclude: '**/*.designer.cs',
@@ -140,7 +140,7 @@ http://docs.nuget.org/consume/command-line-reference#push-command
 
 var options = {
   nuget: './path/to/nuget.exe', //./nuget.exe
-  maxBuffer: 200*1024, // [node child_process buffer](https://nodejs.org/api/child_process.html#child_process_child_process_execfile_file_args_options_callback)
+  maxBuffer: 200*1024, // node child_process buffer
   source: 'http://your-nuget-feed.org',
   apiKey: 'secret-key-goes-here',
   timeout: '300',
@@ -199,7 +199,7 @@ http://docs.nuget.org/consume/command-line-reference#restore-command
 
 var options = {
   nuget: './path/to/nuget.exe', //./nuget.exe
-  maxBuffer: 200*1024, // [node child_process buffer](https://nodejs.org/api/child_process.html#child_process_child_process_execfile_file_args_options_callback)
+  maxBuffer: 200*1024, // node child_process buffer
   source: 'http://your-nuget-feed.org',
   configFile: '%appdata%/NuGet/nuget.config',
   packagesDirectory: './packages',
