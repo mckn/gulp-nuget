@@ -5,7 +5,7 @@ var proxyquire = require('proxyquire');
 var File = require("vinyl");
 var map = require('vinyl-map');
 var cproc = {
-		execFile: function(file, args, cb) {
+		execFile: function(file, args, opts, cb) {
 			this.file = file;
 			this.args = args;
 			cb(null, 'success');
