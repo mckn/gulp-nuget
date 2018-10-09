@@ -75,6 +75,28 @@ describe('when pushing nuspec file to nuget pack stream', function() {
 
 	});
 
+	describe('and suffix is set in options', function() {
+
+		before(function(done) {
+			nupkgs = [];
+			options = { nuget: 'nuget', outputDirectory: './', version: '1.1.1', suffix: 'nightly' };
+			packFile('./test/nuspecs/without-version.nuspec', options, done);
+		});
+
+		it('should create nuget package and pushing it down the pipeline', function() {
+			assert.equal(path.basename(nupkgs[0].path), 'gulp.nuget.1.1.1-nightly.nupkg');
+		});
+
+		it('should create nuget package and store it on disk', function() {
+			assert.equal(fs.existsSync(nupkgs[0].path), true);
+		});
+
+		after(function(done) {
+			fs.unlink(nupkgs[0].path, done);
+		});
+
+	});
+
 	describe('and symbols is set in options', function() {
 
 		before(function(done) {
