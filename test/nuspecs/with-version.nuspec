@@ -7,9 +7,13 @@
     <owners>abc</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>abc</description>
+    <dependencies>
+      <dependency id="jQuery" version="3.6.0" />
+    </dependencies>
   </metadata>
   <files>
     <file src="with-version.nuspec" target="content"/>
     <file src="../configs/symbols.pdb" target="lib\net40" />
+    <file src="../bin/symbols.dll" />
   </files>
 </package>

@@ -15,10 +15,9 @@ var pushStream = proxyquire('../lib/push', { 'child_process': cproc });
 
 
 describe('when pushing nuget package to push stream', function() {
-	var nugetPkg;
 	var pushedNugetPkg;
 	var options;
-  var file;
+  	var file;
 
 	var processStream = function(done) {
 		var stream = pushStream(options);
@@ -46,7 +45,7 @@ describe('when pushing nuget package to push stream', function() {
 			cwm: '../',
 			base: '../',
 			path: '../testing.nupkg',
-			contents: new Buffer('testing')
+			contents: new Buffer.from('testing')
 		});
 	});
 

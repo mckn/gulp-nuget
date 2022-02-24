@@ -13,7 +13,7 @@ describe('when restoring packages.config file with restore', function() {
       cwm: './',
       base: './test/configs/',
       path: './test/configs/packages.config',
-      contents: new Buffer('')
+      contents: new Buffer.from('')
     });
 
     var stream = nuget.restore({ nuget: 'nuget', packagesDirectory: './.gulp-nuget/packages/' });
@@ -26,10 +26,10 @@ describe('when restoring packages.config file with restore', function() {
   before(restorePackages);
 
   it('should restore packages', function(done) {
-    fs.exists('./.gulp-nuget/packages/Newtonsoft.Json.8.0.3', function (exists) {
+    fs.existsSync('./.gulp-nuget/packages/Newtonsoft.Json.12.0.3', function (exists) {
       assert.ok(exists);
-      done();
     });
+    done();
   });
 
   after(function(done) {
