@@ -1,88 +1,90 @@
-'use strict';
+"use strict";
 
 var assert = require("chai").assert;
-var proxyquire = require('proxyquire');
+var proxyquire = require("proxyquire");
 var File = require("vinyl");
-var map = require('vinyl-map');
+var map = require("vinyl-map");
 var cproc = {
-		execFile: function(file, args, opts, cb) {
-			this.file = file;
-			this.args = args;
-			cb(null, 'success');
-		}
+  execFile: function (file, args, opts, cb) {
+    this.file = file;
+    this.args = args;
+    cb(null, "success");
+  },
+};
+var pushStream = proxyquire("../lib/push", { child_process: cproc });
+
+describe("when pushing nuget package to push stream", function () {
+  var pushedNugetPkg;
+  var options;
+  var file;
+
+  var processStream = function (done) {
+    var stream = pushStream(options);
+
+    stream.pipe(
+      map(function (code, filename) {
+        pushedNugetPkg = {
+          path: filename,
+          contents: code,
+        };
+      })
+    );
+
+    stream.on("end", done);
+    stream.write(file);
+    stream.end();
   };
-var pushStream = proxyquire('../lib/push', { 'child_process': cproc });
 
+  before(function () {
+    options = {
+      nuget: "nuget",
+      source: "http://localhost",
+      apiKey: "asdfasdfasfd",
+    };
 
-describe('when pushing nuget package to push stream', function() {
-	var pushedNugetPkg;
-	var options;
-  	var file;
+    file = new File({
+      cwm: "../",
+      base: "../",
+      path: "../testing.nupkg",
+      contents: Buffer.from("testing"),
+    });
+  });
 
-	var processStream = function(done) {
-		var stream = pushStream(options);
+  describe("and push cmd is mocked", function () {
+    before(function (done) {
+      processStream(done);
+    });
 
-		stream.pipe(map(function(code, filename) {
-			pushedNugetPkg = {
-				path: filename,
-				contents: code
-			};
-		}));
+    it("should call push cmd mock with correct options", function () {
+      var expected = [
+        "push",
+        "../testing.nupkg",
+        "-apiKey",
+        "asdfasdfasfd",
+        "-source",
+        "http://localhost",
+        "-noninteractive",
+      ];
 
-    stream.on('end', done);
-		stream.write(file);
-		stream.end();
-	};
+      assert.sameMembers(cproc.args, expected);
+    });
 
-	before(function() {
-		options = {
-			nuget: 'nuget',
-			source: 'http://localhost',
-			apiKey: 'asdfasdfasfd'
-		};
+    it("should call push cmd mock with correct nuget package path", function () {
+      assert.deepEqual(cproc.file, "nuget");
+    });
+  });
 
-		file = new File({
-			cwm: '../',
-			base: '../',
-			path: '../testing.nupkg',
-			contents: new Buffer.from('testing')
-		});
-	});
+  describe("and stream is piped", function () {
+    before(function (done) {
+      processStream(done);
+    });
 
-	describe('and push cmd is mocked', function() {
+    it("should push nuget package to the next stream", function () {
+      assert.equal(pushedNugetPkg.path, "../testing.nupkg");
+    });
 
-		before(function(done) {
-			processStream(done);
-		});
-
-		it('should call push cmd mock with correct options', function() {
-      var expected = ['push', '../testing.nupkg',
-        '-apiKey','asdfasdfasfd',
-        '-source','http://localhost',
-        '-noninteractive'];
-
-			assert.sameMembers(cproc.args, expected);
-		});
-
-		it('should call push cmd mock with correct nuget package path', function() {
-			assert.deepEqual(cproc.file, 'nuget');
-		});
-
-	});
-
-	describe('and stream is piped', function() {
-
-		before(function(done) {
-			processStream(done);
-		});
-
-		it('should push nuget package to the next stream', function() {
-			assert.equal(pushedNugetPkg.path, '../testing.nupkg');
-		});
-
-		it('should push nuget package to the next stream', function() {
-			assert.equal(pushedNugetPkg.contents.length, 7);
-		});
-	});
-
+    it("should push nuget package to the next stream", function () {
+      assert.equal(pushedNugetPkg.contents.length, 7);
+    });
+  });
 });

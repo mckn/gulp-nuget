@@ -1,114 +1,115 @@
-var path = require('path');
+var path = require("path");
 var assert = require("assert");
 var File = require("vinyl");
-var map = require('vinyl-map');
-var fs = require('fs');
-var nuget = require('../');
+var map = require("vinyl-map");
+var fs = require("fs");
+var nuget = require("../");
 
-describe('when pushing nuspec file to nuget pack stream', function() {
-	var nupkgs = [];
+describe("when pushing nuspec file to nuget pack stream", function () {
+  var nupkgs = [];
 
-	function packFile(nuspecFile, options, done) {
-		fs.readFile(nuspecFile, function(err, data) {
-			if(err) return done(err);
+  function packFile(nuspecFile, options, done) {
+    fs.readFile(nuspecFile, function (err, data) {
+      if (err) return done(err);
 
-			var nuspec = new File({
-				cwm: '/',
-				base: '/test/',
-				path: nuspecFile,
-				contents: data
-			});
+      var nuspec = new File({
+        cwm: "/",
+        base: "/test/",
+        path: nuspecFile,
+        contents: data,
+      });
 
-			var stream = nuget.pack(options);
+      var stream = nuget.pack(options);
 
-			stream.pipe(map(function(contents, path) {
-				nupkgs.push({ path: path, contents: contents });
-			}));
+      stream.pipe(
+        map(function (contents, path) {
+          nupkgs.push({ path: path, contents: contents });
+        })
+      );
 
-			stream.on('end', done);
-			stream.write(nuspec);
-			stream.end();
-		});
-	}
+      stream.on("end", done);
+      stream.write(nuspec);
+      stream.end();
+    });
+  }
 
-	describe('and version is set in nuspec file', function() {
+  describe("and version is set in nuspec file", function () {
+    before(function (done) {
+      nupkgs = [];
+      options = { nuget: "nuget", outputDirectory: "./" };
+      packFile("./test/nuspecs/with-version.nuspec", options, done);
+    });
 
-		before(function(done) {
-			nupkgs = [];
-			options = { nuget: 'nuget', outputDirectory: './' };
-			packFile('./test/nuspecs/with-version.nuspec', options, done);
-		});
+    it("should create nuget package and pushing it down the pipeline", function () {
+      assert.equal(path.basename(nupkgs[0].path), "gulp.nuget.1.0.0.nupkg");
+    });
 
-		it('should create nuget package and pushing it down the pipeline', function() {
-			assert.equal(path.basename(nupkgs[0].path), 'gulp.nuget.1.0.0.nupkg');
-		});
+    it("should create nuget package and store it on disk", function () {
+      assert.equal(fs.existsSync(nupkgs[0].path), true);
+    });
 
-		it('should create nuget package and store it on disk', function() {
-			assert.equal(fs.existsSync(nupkgs[0].path), true);
-		});
+    after(function (done) {
+      fs.unlink(nupkgs[0].path, done);
+    });
+  });
 
-		after(function(done) {
-			fs.unlink(nupkgs[0].path, done);
-		});
+  describe("and version is set in options", function () {
+    before(function (done) {
+      nupkgs = [];
+      options = { nuget: "nuget", outputDirectory: "./", version: "1.1.1" };
+      packFile("./test/nuspecs/without-version.nuspec", options, done);
+    });
 
-	});
+    it("should create nuget package and pushing it down the pipeline", function () {
+      assert.equal(path.basename(nupkgs[0].path), "gulp.nuget.1.1.1.nupkg");
+    });
 
-	describe('and version is set in options', function() {
+    it("should create nuget package and store it on disk", function () {
+      assert.equal(fs.existsSync(nupkgs[0].path), true);
+    });
 
-		before(function(done) {
-			nupkgs = [];
-			options = { nuget: 'nuget', outputDirectory: './', version: '1.1.1' };
-			packFile('./test/nuspecs/without-version.nuspec', options, done);
-		});
+    after(function (done) {
+      fs.unlink(nupkgs[0].path, done);
+    });
+  });
 
-		it('should create nuget package and pushing it down the pipeline', function() {
-			assert.equal(path.basename(nupkgs[0].path), 'gulp.nuget.1.1.1.nupkg');
-		});
+  describe("and suffix is set in options", function () {
+    before(function (done) {
+      nupkgs = [];
+      options = {
+        nuget: "nuget",
+        outputDirectory: "./",
+        version: "1.1.1",
+        suffix: "nightly",
+      };
+      packFile("./test/nuspecs/without-version.nuspec", options, done);
+    });
 
-		it('should create nuget package and store it on disk', function() {
-			assert.equal(fs.existsSync(nupkgs[0].path), true);
-		});
+    it("should create nuget package and pushing it down the pipeline", function () {
+      assert.equal(
+        path.basename(nupkgs[0].path),
+        "gulp.nuget.1.1.1-nightly.nupkg"
+      );
+    });
 
-		after(function(done) {
-			fs.unlink(nupkgs[0].path, done);
-		});
+    it("should create nuget package and store it on disk", function () {
+      assert.equal(fs.existsSync(nupkgs[0].path), true);
+    });
 
-	});
+    after(function (done) {
+      fs.unlink(nupkgs[0].path, done);
+    });
+  });
 
-	describe('and suffix is set in options', function() {
+  describe("and symbols is set in options", function () {
+    before(function (done) {
+      nupkgs = [];
+      options = { nuget: "nuget", symbols: true };
+      packFile("./test/nuspecs/with-version.nuspec", options, done);
+    });
 
-		before(function(done) {
-			nupkgs = [];
-			options = { nuget: 'nuget', outputDirectory: './', version: '1.1.1', suffix: 'nightly' };
-			packFile('./test/nuspecs/without-version.nuspec', options, done);
-		});
-
-		it('should create nuget package and pushing it down the pipeline', function() {
-			assert.equal(path.basename(nupkgs[0].path), 'gulp.nuget.1.1.1-nightly.nupkg');
-		});
-
-		it('should create nuget package and store it on disk', function() {
-			assert.equal(fs.existsSync(nupkgs[0].path), true);
-		});
-
-		after(function(done) {
-			fs.unlink(nupkgs[0].path, done);
-		});
-
-	});
-
-	describe('and symbols is set in options', function() {
-
-		before(function(done) {
-			nupkgs = [];
-			options = { nuget: 'nuget', symbols: true };
-			packFile('./test/nuspecs/with-version.nuspec', options, done);
-		});
-
-		it('should create nuget package and symbols', function() {
-			assert.equal(nupkgs.length, 2);
-		});
-
-	});
-
+    it("should create nuget package and symbols", function () {
+      assert.equal(nupkgs.length, 2);
+    });
+  });
 });
