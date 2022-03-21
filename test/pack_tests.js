@@ -101,7 +101,7 @@ describe("when pushing nuspec file to nuget pack stream", function () {
     });
   });
 
-  describe("and symbols is set in options", function () {
+  describe("and legacy symbols is set in options", function () {
     before(function (done) {
       nupkgs = [];
       options = { nuget: "nuget", symbols: true };
@@ -112,4 +112,16 @@ describe("when pushing nuspec file to nuget pack stream", function () {
       assert.equal(nupkgs.length, 2);
     });
   });
+
+  describe("and symbols package is set in options", function () {
+    before(function (done) {
+      nupkgs = [];
+      options = { nuget: "nuget", symbols: true, symbolPackageFormat: "snupkg" };
+      packFile("./test/nuspecs/with-version.nuspec", options, done);
+    });
+
+    it("should create one snupkg package", function() {
+      assert.equal(nupkgs.length, 2);
+    });
+  })
 });
