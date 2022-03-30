@@ -74,6 +74,31 @@ describe("when pushing nuget package to push stream", function () {
     });
   });
 
+  describe("and push cmd is mocked with override non interactive", function () {
+    before(function (done) {
+      options = {
+        nuget: "nuget",
+        source: "http://localhost",
+        apiKey: "asdfasdfasfd",
+        interactive: true
+      };
+      processStream(done);
+    });
+
+    it("should call push cmd mock with correct options (no noninteractive)", function () {
+      var expected = [
+        "push",
+        "../testing.nupkg",
+        "-apiKey",
+        "asdfasdfasfd",
+        "-source",
+        "http://localhost"
+      ];
+
+      assert.sameMembers(cproc.args, expected);
+    });
+  });
+
   describe("and stream is piped", function () {
     before(function (done) {
       processStream(done);

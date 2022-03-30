@@ -123,5 +123,7 @@ describe("when pushing nuspec file to nuget pack stream", function () {
     it("should create one snupkg package", function() {
       assert.equal(nupkgs.length, 2);
     });
-  })
+  });
+
+  
 });
