@@ -86,10 +86,12 @@ var options = {
   verbosity: 'normal',
   build: true,
   symbols: true,
+  symbolPackageFormat: "snupkg",
   excludeEmptyDirectories: true,
   includeReferencedProjects: true,
   noDefaultExcludes: true,
   tool: true,
+  interactive: true // Override the default nonInteractive option
 };
 
 var stream = nuget.pack(options);
@@ -146,6 +148,7 @@ var options = {
   timeout: '300',
   configFile: '%AppData%/NuGet/NuGet.config',
   verbosity: 'normal',
+  interactive: true // Override the default nonInteractive option
 };
 
 var stream = nuget.push(options);
@@ -208,7 +211,8 @@ var options = {
   verbosity: 'normal',
   noCache: true,
   requireConsent: true,
-  disableParallelProcessing: true
+  disableParallelProcessing: true,
+  interactive: true // Override the default nonInteractive option
 };
 
 var stream = nuget.restore(options);

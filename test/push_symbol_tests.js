@@ -13,7 +13,7 @@ var cproc = {
 };
 var pushStream = proxyquire("../lib/push", { child_process: cproc });
 
-describe("when pushing nuget package to push stream", function () {
+describe("when pushing nuget symbol package to push stream", function () {
   var pushedNugetPkg;
   var options;
   var file;
@@ -45,12 +45,12 @@ describe("when pushing nuget package to push stream", function () {
     file = new File({
       cwm: "../",
       base: "../",
-      path: "../testing.nupkg",
+      path: "../testing.snupkg",
       contents: Buffer.from("testing"),
     });
   });
 
-  describe("and push cmd is mocked", function () {
+  describe("and symbol push cmd is mocked", function () {
     before(function (done) {
       processStream(done);
     });
@@ -58,7 +58,7 @@ describe("when pushing nuget package to push stream", function () {
     it("should call push cmd mock with correct options", function () {
       var expected = [
         "push",
-        "../testing.nupkg",
+        "../testing.snupkg",
         "-apiKey",
         "asdfasdfasfd",
         "-source",
@@ -69,33 +69,8 @@ describe("when pushing nuget package to push stream", function () {
       assert.sameMembers(cproc.args, expected);
     });
 
-    it("should call push cmd mock with correct nuget package path", function () {
+    it("should call push cmd mock with correct nuget symbol package path", function () {
       assert.deepEqual(cproc.file, "nuget");
-    });
-  });
-
-  describe("and push cmd is mocked with override non interactive", function () {
-    before(function (done) {
-      options = {
-        nuget: "nuget",
-        source: "http://localhost",
-        apiKey: "asdfasdfasfd",
-        interactive: true
-      };
-      processStream(done);
-    });
-
-    it("should call push cmd mock with correct options (no noninteractive)", function () {
-      var expected = [
-        "push",
-        "../testing.nupkg",
-        "-apiKey",
-        "asdfasdfasfd",
-        "-source",
-        "http://localhost"
-      ];
-
-      assert.sameMembers(cproc.args, expected);
     });
   });
 
@@ -104,11 +79,11 @@ describe("when pushing nuget package to push stream", function () {
       processStream(done);
     });
 
-    it("should push nuget package to the next stream", function () {
-      assert.equal(pushedNugetPkg.path, "../testing.nupkg");
+    it("should push nuget symbol package to the next stream", function () {
+      assert.equal(pushedNugetPkg.path, "../testing.snupkg");
     });
 
-    it("should push nuget package to the next stream", function () {
+    it("should push nuget symbol package to the next stream", function () {
       assert.equal(pushedNugetPkg.contents.length, 7);
     });
   });
